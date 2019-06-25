@@ -1,6 +1,9 @@
 <html>
   <head>
 <style>
+  a{
+    margin: 1em;
+  }
 </style>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
@@ -13,17 +16,83 @@
     <script type='text/babel'>
     const {HashRouter, Link, Route} = ReactRouterDOM;
 
+      class All extends React.Component{
+        constructor(props){
+        super(props);
+        this.state = {
+          productId: 0,
+          statusId: 0
+
+        },
+        this.handleChange = this.handleChange.bind(this);
+
+
+        }
+
+        async handleChange(){
+          console.log('testing');
+          const status = await axios.put(`/api/products/1`,2)
+        }
+
+
+        render(){
+          const {products, statusAll} = this.props;
+          const {handleChange} = this;
+          console.log(statusAll);
+          return(
+            <div>{products.length}
+              <ul>{
+                products.map((product)=>(
+                  <li key = {product.id}>
+                    {product.product}
+                    <select onChange = {handleChange}>
+                    {
+                      statusAll.map((status)=>(
+                        <option key = {status.id} value={status.id} >
+                          {status.status}
+                        </option>
+
+                      ))
+                    }
+                    </select>
+
+                  </li>
+
+
+
+                ))
+              }
+              </ul>
+            </div>
+          )
+        }
+
+      }
+
+
       class App extends React.Component {
         constructor(){
           super();
           this.state = {
-            products: []
+            products: [],
+            statusAll: []
           }
+        }
+
+        async componentDidMount(){
+          const response = await fetch('/api/products');
+          const products = await response.json();
+
+          const statuses = await axios.get('/api/statuses');
+          const statusAll = statuses.data;
+          console.log(products);
+          console.log(statusAll);
+          this.setState({products, statusAll});
         }
 
 
       render(){
-        const {products} = this.state;
+        const {products, statusAll} = this.state;
 
         return(
           <HashRouter>
@@ -32,6 +101,8 @@
             <Link to = '/INSTOCK'>INSTOCK</Link>
             <Link to = '/BACKORDERED'>BACKORDERED</Link>
             <Link to = '/DISCONTINUED'>DISCONTINUED</Link>
+
+            <Route path = '/' exact render={()=><All products={products} statusAll = {statusAll}/>}/>
           </HashRouter>
 
 

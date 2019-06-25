@@ -7,10 +7,11 @@ const {Product, Inventory} = models;
 syncAndSeed();
 
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res, next)=> res.sendFile(path.join(__dirname, 'index.html')));
 
-app.get('/api/statuses', async (req, res, next)=>{
+app.get('/api/products', async (req, res, next)=>{
 
   try{
     res.send(await Product.findAll({include: [Inventory]}));
@@ -20,6 +21,31 @@ app.get('/api/statuses', async (req, res, next)=>{
   }
 
 })
+
+app.get('/api/statuses', async (req, res, next)=>{
+
+  try{
+    res.send(await Inventory.findAll());
+  }
+  catch(ex){
+    next(ex);
+  }
+
+})
+
+app.put('/api/products/:productId', async (req, res, next)=>{
+
+  try{
+    console.log(req.body, req.params);
+    //res.send(await Product.update({statusId: req.body}, {id: req.params.productId}));
+  }
+  catch(ex){
+    next(ex);
+  }
+
+})
+
+
 
 
 app.listen(port, ()=> console.log(`listening on port ${port}`));
