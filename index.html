@@ -11,8 +11,41 @@
   <body>
     <div id='root'></div>
     <script type='text/babel'>
+    const {HashRouter, Link, Route} = ReactRouterDOM;
+
+      class App extends React.Component {
+        constructor(){
+          super();
+          this.state = {
+            products: []
+          }
+        }
+
+
+      render(){
+        const {products} = this.state;
+
+        return(
+          <HashRouter>
+            <h2>Acme Inventory</h2>
+            <Link to = '/'>All Products</Link>
+            <Link to = '/INSTOCK'>INSTOCK</Link>
+            <Link to = '/BACKORDERED'>BACKORDERED</Link>
+            <Link to = '/DISCONTINUED'>DISCONTINUED</Link>
+          </HashRouter>
+
+
+
+        )
+
+
+
+      }
+    }
+
       const root = document.querySelector('#root');
-      ReactDOM.render(<hr />, root);
+      ReactDOM.render(<App />, root);
     </script>
   </body>
 </html>
+
