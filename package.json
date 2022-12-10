@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/rymoore411/weekend-acme-inventory#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "pg": "^7.11.0",
     "sequelize": "^5.8.12"
   }
